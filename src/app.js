@@ -38,8 +38,6 @@ app.delete('/user',async(req,res)=>{
     }
 });
 
-
-
 app.patch('/user/:userId',async(req,res)=>{
     const userId = req.params?.userId;
     const data = req.body;
