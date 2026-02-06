@@ -19,20 +19,12 @@ const userSchema = mongoose.Schema({
         required:true,
         unique:true,
         maxLength:50,
-        validate(value){
-            if(!validator.isEmail(value)){
-                throw new Error("InValid Email");
-            }
-        },
+        
     },
     password:{ 
         type:String,
         required:true,
-        validate(value){
-            if(!validator.isStrongPassword(value)){
-                throw new Error("Password Not Strong");
-            }
-        },
+        
     },
     age:{
         type:Number,
@@ -50,7 +42,7 @@ const userSchema = mongoose.Schema({
         type:String,
         default:"https://www.kindpng.com/picc/m/252-2524695_dummy-profile-image-jpg-hd-png-download.png",
         validate(value){
-            if(!validator.isURI(value)){
+            if(!validator.isURL(value)){
                 throw new Error("InValid PHOTO URL");
             }
         },
