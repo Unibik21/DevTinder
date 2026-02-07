@@ -55,7 +55,6 @@ const userSchema = mongoose.Schema({
     skills:{
         type:[String],
     }
-
 });
 
 const User = mongoose.model("User",userSchema);

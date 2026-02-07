@@ -28,6 +28,27 @@ app.post('/signup',async(req,res)=>{
     
 });
 
+app.post("/login",async (req,res)=>{
+    try{
+        const {emailId,password} =req.body;
+        const user =await User.findOne({emailId:emailId});
+        if(!user){
+            throw new Error("NOT VALID EMAIL");
+        }
+        const isPasswordVaild =await bcrypt.compare(password,user.password);
+        if(!isPasswordVaild){
+            throw new Error("Password Not Valid");
+        }
+        else{
+            res.send("LOGIN SUCCESSFULL");
+        }
+    }
+    catch(err){
+        res.status(400).send("ERROR : " + err.message);
+    }
+    
+});
+
 app.get('/feed',async(req,res)=>{
     try{
         const users = await User.find({});
