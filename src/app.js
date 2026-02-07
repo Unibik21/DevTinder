@@ -1,11 +1,14 @@
 const express = require('express');
 const User = require("./models/user");
 const connectDB = require('./config/database');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const {validateSignUpData} = require('./utils/validation');
+const cookieParser = require('cookie-parser');
+const jwt =require('jsonwebtoken')
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post('/signup',async(req,res)=>{
     
@@ -40,6 +43,8 @@ app.post("/login",async (req,res)=>{
             throw new Error("Password Not Valid");
         }
         else{
+            const token = jwt.sign({_id:user._id},"CodeCrush@123");
+            res.cookie("token",token);
             res.send("LOGIN SUCCESSFULL");
         }
     }
@@ -47,6 +52,27 @@ app.post("/login",async (req,res)=>{
         res.status(400).send("ERROR : " + err.message);
     }
     
+});
+
+app.get("/profile",async(req,res)=>{
+
+    try{
+        const cookie = req.cookies;
+        const {token} = cookie;
+        if(!token){
+            throw new Error("PLEASE LOGIN");
+        }
+        const decoded = jwt.verify(token,"CodeCrush@123");
+        const {_id} = decoded;
+        const user = await User.findById(_id);
+        if(!user){
+            throw new Error("NO USER FOUND");
+        }
+        res.send(user);
+    }
+    catch(err){
+        res.status(400).send("ERROR : "+ err.message);
+    }
 });
 
 app.get('/feed',async(req,res)=>{
