@@ -21,7 +21,6 @@ const userSchema = mongoose.Schema({
         required:true,
         unique:true,
         maxLength:50,
-        
     },
     password:{ 
         type:String,
@@ -34,11 +33,10 @@ const userSchema = mongoose.Schema({
     },
     gender:{
         type:String,
-        validate(value){
-            if(!['male','female','others','Male','Female'].includes(value)){
-                throw new Error("Gender Not Valid");
-            }
-        },
+        enum:{
+            values:["MALE","FEMALE","OTHERS"],
+            message: "Provide Gender Details in Capital Letters, Allowed Genders : MALE,FEMALE,OTHERS",
+        }
     },
     photoURL:{
         type:String,
