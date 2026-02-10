@@ -33,14 +33,14 @@ authRouter.post("/login",async (req,res)=>{
         if(!user){
             throw new Error("NOT VALID EMAIL");
         }
-        const isPasswordVaild =user.validatePassword(password);
+        const isPasswordVaild = await user.validatePassword(password);
         if(!isPasswordVaild){
             throw new Error("Password Not Valid");
         }
         else{
             const token = await user.getJWT();
             res.cookie("token",token);
-            res.send("LOGIN SUCCESSFULL");
+            res.send(user);
         }
     }
     catch(err){
