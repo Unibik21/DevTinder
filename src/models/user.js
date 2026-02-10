@@ -33,8 +33,7 @@ const userSchema = mongoose.Schema({
     gender:{
         type:String,
         enum:{
-            values:["MALE","FEMALE","OTHERS"],
-            message: "Provide Gender Details in Capital Letters, Allowed Genders : MALE,FEMALE,OTHERS",
+            values:["Male","Female","Others"],
         }
     },
     photoURL:{
@@ -46,7 +45,7 @@ const userSchema = mongoose.Schema({
             }
         },
     },
-    About:{
+    about:{
         type:String,
         default:"Hey There!!!👋",
         maxLength:250,

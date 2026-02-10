@@ -11,7 +11,7 @@ userRouter.get("/user/request/recieved",userAuth,async(req,res)=>{
         const connectionRequest = await ConnectionRequest.find({
             toUserId:user._id,
             status:"interested"
-        }).populate("fromUserId",["firstName","lastName","photoURL","About"]);
+        }).populate("fromUserId",["firstName","lastName","photoURL","about"]);
 
         res.send({
             message:"Data Fetched Successfully",
@@ -32,8 +32,8 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
                 {toUserId:loggedInUser._id,status:"accepted"},
                 {fromUserId:loggedInUser._id,status:"accepted"}
             ]
-        }).populate('fromUserId',['firstName','lastName','photoURL','About','skills','age','gender'])
-        .populate('toUserId',['firstName','lastName','photoURL','About','skills','age','gender']);
+        }).populate('fromUserId',['firstName','lastName','photoURL','about','skills','age','gender'])
+        .populate('toUserId',['firstName','lastName','photoURL','about','skills','age','gender']);
         
         const data = connections.map(row => {
             if(row.fromUserId._id.equals(loggedInUser._id)){
@@ -76,7 +76,7 @@ userRouter.get("/user/feed",userAuth,async (req,res)=>{
                 $nin: Array.from(hideUserFromFeed),
                 $ne: loggedInUser._id
             }
-        }).select("firstName lastName age gender skills About photoURL").skip(skip).limit(limit);
+        }).select("firstName lastName age gender skills about photoURL").skip(skip).limit(limit);
 
         res.send(users);
 
