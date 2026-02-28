@@ -82,7 +82,7 @@ reqRouter.post("/request/review/:status/:requestId",userAuth, async (req,res)=>{
         const data = await existingPair.save();
 
         res.send({
-            message:`${loggedInUser} ${status} the request.`,
+            message: `Request ${status} successfully.`,
             data,
         })
 
