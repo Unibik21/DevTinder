@@ -7,6 +7,8 @@ const ConnectionRequest = require('../models/connectionRequests');
 const { connection } = require('mongoose');
 const reqRouter = express.Router();
 
+const sendEmail = require("../utils/sendEmail")
+
 reqRouter.post("/request/send/:status/:userId",userAuth,async(req,res)=>{
     try{
         const fromUserId = req.user._id;
@@ -47,6 +49,8 @@ reqRouter.post("/request/send/:status/:userId",userAuth,async(req,res)=>{
         });
 
         const data = await connectionRequest.save();
+        const emailRes = await sendEmail.run();
+        console.log(emailRes);
 
         res.send({
             message:`Request Status : ${status}`,
@@ -54,6 +58,11 @@ reqRouter.post("/request/send/:status/:userId",userAuth,async(req,res)=>{
         });
     }
     catch(err){
+        console.log("========== EMAIL ERROR START ==========");
+        console.log("Error name:", err.name);
+        console.log("Error message:", err.message);
+        console.log("Full error:", JSON.stringify(err, null, 2));
+        console.log("========== EMAIL ERROR END ==========");
         res.status(400).send("ERROR : "+err.message);
     }
 });
